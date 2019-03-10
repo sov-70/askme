@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   has_many :quesrtions
   FORMAT_USER = /[a-z\d_]+/i
-  validates :username, presence: true, uniqueness: {case_sensitive: false} , length: {maximum: 40}, format: {with: FORMAT_USER}
+  validates :username, presence: true, uniqueness: true, length: {maximum: 40}, format: {with: FORMAT_USER}
   FORMAT_EMAIL = /[a-z\d+_.\-]+@[a-z\d\-]+([a-z\d.\-]+)*\.[a-z]+/i
   validates :email, presence: true, uniqueness: true, format: {with: FORMAT_EMAIL}
 
@@ -17,7 +17,7 @@ class User < ApplicationRecord
   validates_confirmation_of :password
 
   before_save :encrypt_password
-  before_save :downcase_username
+  before_validation :downcase_username
 
   def downcase_username
     username.downcase!
